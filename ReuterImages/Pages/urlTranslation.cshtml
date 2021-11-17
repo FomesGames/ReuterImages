@@ -1,0 +1,59 @@
+﻿@page
+@model UrlTranslationModel
+@{
+    ViewData["Title"] = "Url Translation";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to toanslate Reuters url image text to regional languages.</p>
+<table>
+    <tr>
+        <th>
+            <textarea id="inputText" name="inputText" rows="2" cols="100" placeholder="url to translate..."></textarea>
+        </th>
+    </tr>
+</table>
+
+<body onload="ajaxCallToServer()">
+</body>
+
+<script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function ajaxCallToServer() {
+        $.ajax({
+            url: 'https://www.reuters.com/news/picture/diwali-leaves-delhi-wheezing-in-dangerou-idUSRTXJKE3V',
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                "Accept":"application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers":"Content-Type"
+                //WRITE IF THEIR HAVE SOME HEADER REQUEST OR DATA
+            },
+            crossDomain: true,
+            success: function (data, textStatus, xhr) {
+                console.log(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+</script>
+
+@*<script type="text/javascript">
+
+        var message;
+        function ajaxCallToServer() {
+            var xmlhttp = new XMLHttpRequest();
+            var url = "https://google.com"
+            xmlhttp.open("GET", url, true);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.onload = (res) => {
+                console.log(res['target']['response']);
+                message = res['target']['response'];
+                document.querySelector("body").innerHtml = message;
+            };
+            xmlhttp.send();
+        }
+    </script>*@

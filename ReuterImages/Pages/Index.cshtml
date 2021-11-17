@@ -164,6 +164,12 @@
         function doSynthesize(text, languageCode) {
             var voiceId;
             switch (languageCode) {
+                case "en":
+                    voiceId = "Marlene";
+                    break;
+                case "en":
+                    voiceId = "Marlene";
+                    break;
                 case "hi":
                     voiceId = "Marlene";
                     break;
@@ -180,7 +186,7 @@
                     voiceId = "Vitoria";
                     break;
                 default:
-                    voiceId = null;
+                    voiceId = "Marlene";
                     break;
             }
             if (!voiceId) {
