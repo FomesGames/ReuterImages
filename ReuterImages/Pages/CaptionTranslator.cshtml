@@ -1,0 +1,157 @@
+﻿@page
+@model UrlTranslationModel
+@{
+    ViewData["Title"] = "Reuters Pictures Caption Translator";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div style="padding-top:15px;"></div>
+<div class="container">
+    <div class="row" id="row-images" data-image="1">
+        <div class="col-sm-5">
+            <div id="orig-top-text">
+                Diwali leaves Delhi wheezing in dangerously unhealthy air
+            </div>
+            <div id="orig-image"></div>
+            <div id="orig-bottom-text">
+                New Delhi residents woke up on Friday under a blanket of smog darkening the city, the most dangerous air pollution of the year after Diwali revellers defied - as usual - a fireworks ban during India's annual Hindu festival of lights. ...MORE
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div height="100%" style="display:grid;padding-top:75%">
+                <select id="targetLanguageCodeDropdown" style="margin-bottom:15px;">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="bn">Bengali</option>
+                    <option value="ta">Tamil</option>
+                    <option value="te">Telugu</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="mr">Marathi</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="ur">Urdu</option>
+                </select>
+                <button type="button" id="translatetText">Translate</button>
+            </div>
+        </div>
+        <div class="col-sm-5 ">
+            <div id="trans-top-text">
+
+            </div>
+            <div id="trans-image"></div>
+            <div id="trans-bottom-text">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <button type="button" id="previous_image" disabled>Previous</button>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" id="next_image" style="float:right;">Next</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1030.0.min.js"></script>
+<script type="text/javascript">
+    var dataObj = {}
+    $(document).ready(function () {
+
+
+        //$.getJSON("json/content.json", function (obj) {
+        //    $.each(obj.images, function (key, value) {
+        //        $("ul").append("<li>" + value.topcontent + "'s age is : " + value.bottomcontent + "</li>");
+        //    });
+        //});
+
+        $('#orig-image').append(' <img  src = "images/Image-1.jpg" width="100%"/> ')
+        $.getJSON("json/content.json", function (obj) {
+            dataObj = obj.images
+        });
+        var AWS_DEFAULT_REGION = "eu-west-1";
+        var AWS_ACCESS_KEY_ID = "AKIAVDNT74OJT73WCFCA";
+        var AWS_SECRET_ACCESS_KEY = "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";
+        AWS.config.region = AWS_DEFAULT_REGION; // Region
+        AWS.config.credentials = new AWS.Credentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
+
+        var translate = new AWS.Translate({ region: AWS.config.region });
+        var polly = new AWS.Polly();
+
+        $('#translatetText').on("click", function (e) {
+            doTranslate($("#orig-top-text").text().trim(), $("#trans-top-text"), false)
+            doTranslate($("#orig-bottom-text").text().trim(), $("#trans-bottom-text"), true)
+        });
+        $('#previous_image').on("click", function (e) {
+            $("#trans-top-text,#trans-image, #trans-bottom-text").html("");
+            var img_order = []
+            var img_num = $('#row-images').data('image') - 1
+            if (img_num >= 1) {
+                $("#next_image").removeAttr("disabled")
+            } else {
+                $("#next_image").attr("disabled", true)
+            }
+            if (img_num == 1) {
+                $("#previous_image").attr("disabled", true)
+            }
+            img_order = dataObj["img-" + img_num]
+            $("#orig-top-text").html("").text(img_order.topcontent)
+            $('#orig-image').html("").append(' <img  src = "' + img_order.imageurl + '" width="100%"/>')
+            $("#orig-bottom-text").html("").text(img_order.bottomcontent)
+            $('#row-images').data('image', img_num)
+        });
+
+        $('#next_image').on("click", function (e) {
+            $("#trans-top-text,#trans-image, #trans-bottom-text").html("");
+            var img_order = []
+            var img_num = $('#row-images').data('image') + 1
+            if (img_num > 1) {
+                $("#previous_image").removeAttr("disabled")
+            } else {
+                $("#previous_image").attr("disabled", true)
+            }
+            img_order = dataObj["img-" + img_num]
+            $('#row-images').data('image', img_num)
+            $("#orig-top-text").html("").text(img_order.topcontent)
+            $('#orig-image').html("").append(' <img  src = "' + img_order.imageurl + '" width="100%"/>')
+            $("#orig-bottom-text").html("").text(img_order.bottomcontent)
+            if ($('#row-images').data('image') == 5) {
+                $("#next_image").attr("disabled", true)
+            } else { $("#next_image").removeAttr("disabled") }
+
+        });
+
+        function doTranslate(textToTranslate, outputId, isDisplayImage) {
+            var params = {
+                Text: textToTranslate,
+                SourceLanguageCode: 'en',
+                TargetLanguageCode: $("#targetLanguageCodeDropdown").val()
+            };
+
+            translate.translateText(params, function (err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                    alert("Error calling Amazon Translate. " + err.message);
+                    return;
+                }
+                if (data) {
+                    outputId.text(data.TranslatedText);
+                    if (isDisplayImage) {
+                        $('#trans-image').html("").append(' <img src = "' + $('#orig-image img').attr('src') + '" width="100%" /> ')
+                    }
+
+
+                }
+            });
+        }
+
+    });
+
+
+</script>

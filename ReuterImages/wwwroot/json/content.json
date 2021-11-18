@@ -1,0 +1,30 @@
+{
+  "images": {
+    "img-1": {
+      "topcontent": "Diwali leaves Delhi wheezing in dangerously unhealthy air",
+      "imageurl": "images/Image-1.jpg",
+      "bottomcontent": "New Delhi residents woke up on Friday under a blanket of smog darkening the city, the most dangerous air pollution of the year after Diwali revellers defied - as usual - a fireworks ban during India's annual Hindu festival of lights. "
+    },
+    "img-2": {
+      "topcontent": "Hindu devotees take holy dip in polluted Delhi river",
+      "imageurl": "images/Image-2.jpg",
+      "bottomcontent": "A Hindu woman worships the Sun god as she stands amidst the foam covering the polluted Yamuna river during the Hindu religious festival of Chhath Puja in New Delhi, India, November 10, 2021. REUTERS/Adnan Abidi"
+    },
+    "img-3": {
+      "topcontent": "Celebrating Diwali, festival of lights",
+      "imageurl": "images/Image-3.jpg",
+      "bottomcontent": "A woman and her son hold firecrackers during Diwali, the Hindu festival of lights, in Mumbai, India, November 4, 2021. REUTERS/Francis Macarenhas"
+    },
+    "img-4": {
+      "topcontent": "India celebrates 1 billion COVID vaccine doses milestone",
+      "imageurl": "images/Image-4.jpg",
+      "bottomcontent": "A woman takes a selfie while being fed with sweets as India celebrates the milestone of administering one billion COVID-19 vaccine doses, in New Delhi, October 21. REUTERS/Anushree Fadnavis"
+    },
+    "img-5": {
+      "topcontent": "Top Photos of the Day",
+      "imageurl": "images/Image-5.jpg",
+      "bottomcontent": "Cows that were stranded in a flooded barn are rescued by people in boats and a sea doo after rainstorms lashed the western Canadian province of British Columbia, triggering landslides and floods, and shutting highways, in Abbotsford, British"
+    }
+
+  }  
+}
